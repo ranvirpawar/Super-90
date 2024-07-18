@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:super90/view/homescreen.dart';
+import 'package:super90/view/app_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,10 +16,12 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Color.fromARGB(255, 190, 10, 82),
+        ),
         useMaterial3: true,
       ),
-      home: HomeScreen(),
+      home: AppScreen(),
     );
   }
 }
