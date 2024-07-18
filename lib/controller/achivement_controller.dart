@@ -3,18 +3,19 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:super90/data/model/dailydata_model.dart';
 
-class AchievementController extends GetxController {
+class DopamineController extends GetxController {
   var workout = false.obs;
   var healthyDiet = false.obs;
   var reading = false.obs;
   final String currentDate;
 
-  AchievementController(this.currentDate);
+  DopamineController(this.currentDate);
 
   @override
   void onInit() {
     super.onInit();
     _loadAchievements();
+    printAllPreferences();
   }
 
   void toggleWorkout() {
@@ -52,6 +53,47 @@ class AchievementController extends GetxController {
       workout.value = dailyData.workout;
       healthyDiet.value = dailyData.healthyDiet;
       reading.value = dailyData.reading;
+    }
+  }
+
+  Future<void> printAllPreferences() async {
+    final prefs = await SharedPreferences.getInstance();
+    final keys = prefs.getKeys();
+    for (String key in keys) {
+      print('$key: ${prefs.get(key)}');
+    }
+  }
+
+  Future<Map<DateTime, bool>> getWorkoutData() async {
+    final prefs = await SharedPreferences.getInstance();
+    final keys = prefs.getKeys();
+    Map<DateTime, bool> workoutDates = {};
+
+    for (String key in keys) {
+      if (_isValidDateFormat(key)) {
+        try {
+          final dailyDataStr = prefs.getString(key);
+          if (dailyDataStr != null) {
+            final dailyData = DailyData.fromJson(jsonDecode(dailyDataStr));
+            final date = DateTime.parse(key);
+            workoutDates[date] = dailyData.workout;
+          }
+        } catch (e) {
+          print('Error parsing key $key: $e');
+        }
+      } else {
+        print('Invalid date format for key: $key');
+      }
+    }
+    return workoutDates;
+  }
+
+  bool _isValidDateFormat(String dateString) {
+    try {
+      DateTime.parse(dateString);
+      return true;
+    } catch (e) {
+      return false;
     }
   }
 }

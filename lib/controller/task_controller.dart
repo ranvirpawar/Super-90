@@ -1,10 +1,8 @@
 import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:super90/data/model/app_model.dart';
-
 import 'package:super90/data/model/dailydata_model.dart';
-
+import 'package:super90/data/model/task_model.dart';
 
 class TaskController extends GetxController {
   var tasks = <Task>[].obs;
@@ -24,6 +22,18 @@ class TaskController extends GetxController {
     _saveTasks();
   }
 
+  void editTask(Task task, String newTitle) {
+    task.title = newTitle;
+    tasks.refresh();
+    _saveTasks();
+  }
+
+  void deleteTask(Task task) {
+    tasks.remove(task);
+    tasks.refresh();
+    _saveTasks();
+  }
+
   void toggleTaskStatus(int index) {
     tasks[index].isDone = !tasks[index].isDone;
     tasks.refresh();
@@ -33,7 +43,7 @@ class TaskController extends GetxController {
   void _saveTasks() async {
     final prefs = await SharedPreferences.getInstance();
     final dailyData = DailyData(
-      tasks: tasks,
+      tasks: tasks.toList(), // Convert ObservableList to List<Task>
       workout: false,
       healthyDiet: false,
       reading: false,

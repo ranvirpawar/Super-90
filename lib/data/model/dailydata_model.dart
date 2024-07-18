@@ -1,4 +1,5 @@
 import 'package:super90/data/model/app_model.dart';
+import 'package:super90/data/model/task_model.dart';
 
 class DailyData {
   List<Task> tasks;
