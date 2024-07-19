@@ -5,26 +5,28 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'dart:math';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:super90/main.dart';
+import 'package:super90/xmiddleware/coffe_model.dart';
+import 'package:super90/xmiddleware/middlewares/api_middleware.dart';
+import 'package:super90/xmiddleware/middlewares/expected_types.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  test("convert Coffee and Brewing JSON", () {
+    var response = jsonDecode('{"coffee": {'
+        '"region": [{"id":1,"name":"John Doe"},{"id":2,"name":"Don Joeh"}],'
+        '"country": {"id":2,"company":"ACME"}'
+        '},'
+        '"brewing": {'
+        '"region": [{"id":1,"name":"John Doe"},{"id":2,"name":"Don Joeh"}],'
+        '"country": {"id":2,"company":"ACME"}'
+        '}'
+        '}');
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
-
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    var response1 = APIMiddleware<CoffeeAndBrewing, Map<String, dynamic>>()
+        .convertAsPerModal(response, [CoffeeAndBrewing.fromJson], ExpectedTypes.getPettyCashVoucherDetails);
+    print("Coffee Region Name=${response1.first.coffee.region.first.name}");
+    print("Brewing Company=${response1.first.brewing.country.company}");
   });
 }

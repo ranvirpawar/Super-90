@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:super90/components/horizontal_calender.dart';
+import 'package:super90/constants/app_colors.dart';
 import 'package:super90/constants/app_strings.dart';
 import 'package:super90/controller/achivement_controller.dart';
 import 'package:super90/controller/countdown_controller.dart';
@@ -52,29 +53,36 @@ class HomeScreen extends StatelessWidget {
               SizedBox(height: 20),
               const Text(AppString.dopamineText,
                   style: TextStyle(fontSize: 20)),
-              Wrap(
-                spacing: 1,
-                runSpacing: 0.5,
-                children: [
-                  Obx(
-                    () => DopamineChips(
-                        achievementController: achievementController,
-                        title: 'Workout',
-                        isSelected: achievementController.workout.value),
+              Card(
+                color: AppColors.ligthBlue,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Wrap(
+                    spacing: 1,
+                    runSpacing: 0.5,
+                    children: [
+                      Obx(
+                        () => DopamineChips(
+                            achievementController: achievementController,
+                            title: 'Workout',
+                            isSelected: achievementController.workout.value),
+                      ),
+                      Obx(
+                        () => DopamineChips(
+                            title: 'Healthy Diet',
+                            achievementController: achievementController,
+                            isSelected:
+                                achievementController.healthyDiet.value),
+                      ),
+                      Obx(
+                        () => DopamineChips(
+                            title: 'Reading',
+                            achievementController: achievementController,
+                            isSelected: achievementController.reading.value),
+                      ),
+                    ],
                   ),
-                  Obx(
-                    () => DopamineChips(
-                        title: 'Healthy Diet',
-                        achievementController: achievementController,
-                        isSelected: achievementController.healthyDiet.value),
-                  ),
-                  Obx(
-                    () => DopamineChips(
-                        title: 'Reading',
-                        achievementController: achievementController,
-                        isSelected: achievementController.reading.value),
-                  ),
-                ],
+                ),
               ),
               SizedBox(height: 20),
               Card(
