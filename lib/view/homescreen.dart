@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:super90/components/dopamine_chips.dart';
 import 'package:super90/components/horizontal_calender.dart';
 import 'package:super90/constants/app_colors.dart';
 import 'package:super90/constants/app_strings.dart';
@@ -87,7 +88,7 @@ class HomeScreen extends StatelessWidget {
               SizedBox(height: 20),
               Card(
                 child: TextField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'How was your day?',
                   ),
@@ -138,15 +139,10 @@ class HomeScreen extends StatelessWidget {
     bool isEditing = false;
 
     return ListTile(
-      title: isEditing
-          ? TextField(
-              controller: editingController,
-              onSubmitted: (newValue) {
-                controller.editTask(task, newValue);
-                isEditing = false; // Reset editing mode
-              },
-            )
-          : Text(task.title),
+      title: Text(
+        task.title,
+        style: TextStyle(color: Color.fromARGB(158, 106, 96, 96).withOpacity(0.8)),
+      ),
       onTap: () {
         // Toggle editing mode
         isEditing = !isEditing;
@@ -158,30 +154,19 @@ class HomeScreen extends StatelessWidget {
               task, editingController.text); // Save changes on tap away
         }
       },
-      leading: IconButton(
-        icon: Icon(Icons.edit),
-        onPressed: () {
-          // Toggle editing mode directly
-          isEditing = !isEditing;
-          if (isEditing) {
-            editingController.text =
-                task.title; // Initialize text field with task title
-          }
-        },
-      ),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          IconButton(
-            icon: Icon(Icons.delete),
-            onPressed: () {
-              controller.deleteTask(task);
-            },
-          ),
           Checkbox(
             value: task.isDone,
             onChanged: (bool? value) {
               controller.toggleTaskStatus(controller.tasks.indexOf(task));
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.more_vert),
+            onPressed: () {
+              // controller.deleteTask(task);
             },
           ),
         ],
@@ -190,34 +175,3 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class DopamineChips extends StatelessWidget {
-  const DopamineChips({
-    super.key,
-    required this.achievementController,
-    required this.title,
-    required this.isSelected,
-  });
-  final String title;
-  final DopamineController achievementController;
-  final bool isSelected;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: ChoiceChip(
-        label: Text(title),
-        selected: isSelected,
-        onSelected: (bool selected) {
-          if (title == 'Workout') {
-            achievementController.toggleWorkout();
-          } else if (title == 'Healthy Diet') {
-            achievementController.toggleHealthyDiet();
-          } else if (title == 'Reading') {
-            achievementController.toggleReading();
-          }
-        },
-      ),
-    );
-  }
-}

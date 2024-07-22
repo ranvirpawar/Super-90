@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:super90/constants/app_colors.dart';
-import 'package:super90/view/homescreen.dart';
+
 import 'package:super90/view/app_screen.dart';
 
 void main() {
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         // Define the color scheme
         colorScheme: const ColorScheme(
           primary: AppColors.ligthBlue,
-          secondary: AppColors.lightPink,
+          secondary: AppColors.lightYellow,
           surface: AppColors.white,
           background: AppColors.darkBgColor,
           error: Colors.red,
@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
         ),
         // Define the default app bar theme
         appBarTheme: const AppBarTheme(
-          backgroundColor: AppColors.ligthBlue,
+          backgroundColor: AppColors.darkBgColor,
           foregroundColor: AppColors.white,
         ),
         // Define the default button theme
@@ -63,13 +63,11 @@ class MyApp extends StatelessWidget {
           fillColor: AppColors.lightGreen,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.0),
+            borderSide: BorderSide.none,
           ),
+          labelStyle: const TextStyle(color: AppColors.white),
         ),
-        // Define the default floating action button theme
-        floatingActionButtonTheme: const FloatingActionButtonThemeData(
-          backgroundColor: AppColors.lightPink,
-          foregroundColor: AppColors.white,
-        ),
+
         // Define other theme properties if needed
         useMaterial3: true,
       ),
